@@ -13,48 +13,34 @@ struct GameView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                HStack{
-                    Text("\(game.homeTeam.name)")
-                    Spacer()
-                    Text("\(game.homeShots) - \(game.awayShots)")
-                    Spacer()
-                    Text("\(game.awayTeam.name)")
-                }
-                .padding(.horizontal, 20)
-                
-                Text("Periods")
-                VStack{
+                GameHeader(game: game)
+                List{
                     ForEach(game.periods){ period in
-                        VStack{
-                            Text("\(period.number)")
-                            HStack{
-                                Text("\(period.homeTeamShots)")
-                                
-                                Text(" - ")
-                                
-                                Text("\(period.awayTeamShots)")
+                        Section(header: Text("Period: \(period.number)")){
+                            NavigationLink(destination: PeriodView(game: game)){
+                                periodRow(period: period)
                             }
                         }
-                        
                     }
                 }
+                .border(.blue)
                 HStack{
                     
                     Button(action: {
                         addShoot(forHomeTeam: true)
                     }, label: {
                         /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-
+                        
                     })
                     Spacer()
                     Button("Away"){
                         addShoot(forHomeTeam: false)
                     }
-                    .border(.black)
+                   
                     
                     
                 }
-
+                
                 
                 
             }
@@ -80,6 +66,30 @@ struct GameView: View {
             game.periods[game.periods.count - 1 ].awayTeamShots += 1
         }
     }
+}
+
+struct periodRow: View{
+    var period: Period
+    var body: some View{
+        HStack{
+            
+            Text("\(period.homeTeamShots)")
+                .frame(width: 30)
+            Spacer()
+  
+            Text("4 - 3")
+    
+            Spacer()
+            Text("\(period.awayTeamShots)")
+                .frame(width: 30)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .font(.title2)
+        
+        
+    }
+    
 }
 
 #Preview {
