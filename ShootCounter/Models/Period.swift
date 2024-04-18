@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct Period {
+struct Period: Identifiable {
+    var id = UUID()
     let number: Int
-    var homeTeamShoots: Int
-    var homeTeamGoals: Int
-    var awayTeamShots: Int
-    var awayTeamGoals: Int
+    var homeTeamShots: Int = 0
+    var homeTeamGoals: Int = 0
+    var awayTeamShots: Int = 0
+    var awayTeamGoals: Int = 0
 }
