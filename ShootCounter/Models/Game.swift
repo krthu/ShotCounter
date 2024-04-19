@@ -28,6 +28,22 @@ class Game: ObservableObject{
         return totalshots
     }
     
+    var homeGoals: Int {
+        var totalGoals = 0
+        for period in periods {
+            totalGoals += period.homeTeamGoals
+        }
+        return totalGoals
+    }
+    
+    var awayGoals: Int {
+        var totalGoals = 0
+        for period in periods {
+            totalGoals += period.awayTeamGoals
+        }
+        return totalGoals
+    }
+    
     init(homeTeam: Team, awayTeam: Team) {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam

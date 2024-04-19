@@ -17,7 +17,7 @@ struct GameView: View {
                 List{
                     ForEach(game.periods){ period in
                         Section(header: Text("Period: \(period.number)")){
-                            NavigationLink(destination: PeriodView(game: game)){
+                            NavigationLink(destination: PeriodView(game: game, periodNR: period.number)){
                                 periodRow(period: period)
                             }
                         }
@@ -77,7 +77,7 @@ struct periodRow: View{
                 .frame(width: 30)
             Spacer()
   
-            Text("4 - 3")
+            Text("\(period.homeTeamGoals) - \(period.awayTeamGoals)")
     
             Spacer()
             Text("\(period.awayTeamShots)")
