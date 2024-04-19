@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model
 class Game: ObservableObject{
+    var id = UUID()
     @Published var homeTeam: Team
     @Published var awayTeam: Team
     @Published var periods: [Period] = [] // [Period(number: 1, homeTeamShoots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0)]

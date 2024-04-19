@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ShootCounterApp: App {
@@ -13,5 +14,6 @@ struct ShootCounterApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContext(ModelContext: )
     }
 }

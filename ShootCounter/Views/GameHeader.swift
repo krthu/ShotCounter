@@ -15,7 +15,14 @@ struct GameHeader: View{
             GameTeamInfo(teamName: game.homeTeam.name, shots: game.homeShots)
             
             Spacer()
-            Text("\(game.homeGoals) - \(game.awayGoals)")
+            VStack{
+                Text("GOALS")
+                    .font(.system(size: 8))
+                    .foregroundColor(.secondary)
+                Text("\(game.homeGoals) - \(game.awayGoals)")
+                    .font(.title)
+            }
+            
             Spacer()
             
             GameTeamInfo(teamName: game.awayTeam.name, shots: game.awayShots)
@@ -31,6 +38,9 @@ struct GameTeamInfo: View{
     var body: some View{
         VStack{
             Text(teamName)
+            Text("SHOTS")
+                .font(.system(size: 8))
+                .foregroundColor(.secondary)
             Text("\(shots)")
         }
     }

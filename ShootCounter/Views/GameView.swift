@@ -86,10 +86,7 @@ struct periodRow: View{
         .frame(maxWidth: .infinity)
         .padding()
         .font(.title2)
-        
-        
     }
-    
 }
 
 #Preview {

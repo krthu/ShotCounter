@@ -6,7 +6,12 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Team{
+@Model
+class Team{
     let name: String
+    init(name: String) {
+        self.name = name
+    }
 }
