@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model
 class Game: ObservableObject{
-    @Published var homeTeam: Team
-    @Published var awayTeam: Team
-    @Published var periods: [Period] = [] // [Period(number: 1, homeTeamShoots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0)]
+    var id = UUID()
+
+    var homeTeam: Team
+    var awayTeam: Team
+    var periods: [Period] = [] //[Period(number: 1)]
     
     var homeShots: Int {
         var totalshots = 0
@@ -28,9 +32,26 @@ class Game: ObservableObject{
         return totalshots
     }
     
+    var homeGoals: Int {
+        var totalGoals = 0
+        for period in periods {
+            totalGoals += period.homeTeamGoals
+        }
+        return totalGoals
+    }
+    
+    var awayGoals: Int {
+        var totalGoals = 0
+        for period in periods {
+            totalGoals += period.awayTeamGoals
+        }
+        return totalGoals
+    }
+    
     init(homeTeam: Team, awayTeam: Team) {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
+        self.periods = [Period(number: 1)]
       
     }
     
@@ -40,8 +61,4 @@ class Game: ObservableObject{
         self.periods = periods
       
     }
-
-    
-    
-    
 }
