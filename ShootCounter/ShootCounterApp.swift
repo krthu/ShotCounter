@@ -10,10 +10,13 @@ import SwiftData
 
 @main
 struct ShootCounterApp: App {
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContext(ModelContext: )
+        .modelContainer(for: Game.self)
     }
+    
+    
 }

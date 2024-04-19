@@ -11,9 +11,9 @@ import SwiftData
 @Model
 class Game: ObservableObject{
     var id = UUID()
-    @Published var homeTeam: Team
-    @Published var awayTeam: Team
-    @Published var periods: [Period] = [] // [Period(number: 1, homeTeamShoots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0)]
+    var homeTeam: Team
+    var awayTeam: Team
+    var periods: [Period] = [] //[Period(number: 1)]
     
     var homeShots: Int {
         var totalshots = 0
@@ -50,6 +50,7 @@ class Game: ObservableObject{
     init(homeTeam: Team, awayTeam: Team) {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
+        self.periods = [Period(number: 1)]
       
     }
     
@@ -58,6 +59,14 @@ class Game: ObservableObject{
         self.awayTeam = awayTeam
         self.periods = periods
       
+    }
+    
+    func homeShotsFun() -> Int{
+        var totalshots = 0
+        for period in periods {
+            totalshots += period.homeTeamShots
+        }
+        return totalshots
     }
 
     

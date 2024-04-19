@@ -23,38 +23,23 @@ struct GameView: View {
                         }
                     }
                 }
-                .border(.blue)
-                HStack{
-                    
-                    Button(action: {
-                        addShoot(forHomeTeam: true)
-                    }, label: {
-                        /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-                        
-                    })
-                    Spacer()
-                    Button("Away"){
-                        addShoot(forHomeTeam: false)
-                    }
-                   
-                    
-                    
-                }
-                
-                
-                
             }
             .toolbar{
-                Button("New Note", systemImage: "plus", action: {addPeriod()})
+                Button("New Period", systemImage: "plus", action: {addPeriod()})
             }
         }
     }
     
     func addPeriod(){
-        let number = game.periods.last?.number
-        if let number = number{
-            game.periods.append(Period(number: (number + 1)) )
+        let num = game.periods.count
+        //let number = game.periods.last?.number
+       // if let num = num{
+        print(num)
+        game.periods.append(Period(number: (num + 1)) )
+        for period in game.periods{
+            print("\(period.number)")
         }
+      //  }
         
     }
     
@@ -72,16 +57,31 @@ struct periodRow: View{
     var period: Period
     var body: some View{
         HStack{
-            
-            Text("\(period.homeTeamShots)")
-                .frame(width: 30)
+            VStack{
+                Text("SHOOTS")
+                    .font(.system(size: 8))
+                    .foregroundColor(.secondary)
+                Text("\(period.homeTeamShots)")
+                    .frame(width: 30)
+            }
+
             Spacer()
-  
-            Text("\(period.homeTeamGoals) - \(period.awayTeamGoals)")
-    
+            VStack{
+                Text("GOALS")
+                    .font(.system(size: 8))
+                    .foregroundColor(.secondary)
+                Text("\(period.homeTeamGoals) - \(period.awayTeamGoals)")
+            }
             Spacer()
-            Text("\(period.awayTeamShots)")
-                .frame(width: 30)
+            VStack{
+                Text("GOALS")
+                    .font(.system(size: 8))
+                    .foregroundColor(.secondary)
+                Text("\(period.awayTeamShots)")
+                    .frame(width: 30)
+                
+            }
+
         }
         .frame(maxWidth: .infinity)
         .padding()

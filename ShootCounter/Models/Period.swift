@@ -6,12 +6,27 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Period: Identifiable {
+@Model
+class Period: Identifiable {
     var id = UUID()
     let number: Int
     var homeTeamShots: Int = 0
     var homeTeamGoals: Int = 0
     var awayTeamShots: Int = 0
     var awayTeamGoals: Int = 0
+    
+    init(id: UUID = UUID(), number: Int, homeTeamShots: Int, homeTeamGoals: Int, awayTeamShots: Int, awayTeamGoals: Int) {
+        self.id = id
+        self.number = number
+        self.homeTeamShots = homeTeamShots
+        self.homeTeamGoals = homeTeamGoals
+        self.awayTeamShots = awayTeamShots
+        self.awayTeamGoals = awayTeamGoals
+    }
+    
+    init(number: Int){
+        self.number = number
+    }
 }
