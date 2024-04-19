@@ -19,10 +19,7 @@ struct GamesListView: View {
             VStack{
                 List{
                     ForEach(games){ game in
-                        // GameRow(game: game)
                         NavigationLink(destination: GameView(game: game)){
-                            //                            GameHeader(game: game)
-                            //                                .foregroundColor(.black)
                             GameRow(game: game)
                         }
                     }
@@ -31,6 +28,7 @@ struct GamesListView: View {
                     })
                     
                 }
+                .listRowSpacing(10)
             }
             .toolbar{
                 Button("New Note", systemImage: "plus", action: {showNewGameSheet = true})
@@ -39,6 +37,7 @@ struct GamesListView: View {
         }
         .sheet(isPresented: $showNewGameSheet, content: {
             NewGameSheet()
+                .presentationDetents([.medium])
         })
         
         
@@ -85,6 +84,12 @@ struct NewGameSheet: View {
     
     var body: some View {
         VStack{
+            Text("New Game")
+                .font(.title)
+                .bold()
+                .frame(maxWidth: .infinity)
+                
+            Spacer()
             TextField("Home team name", text: $homeTeamName)
                 .padding()
                 .border(.black)
@@ -92,6 +97,7 @@ struct NewGameSheet: View {
             TextField("Away team name", text: $awayTeamName)
                 .padding()
                 .border(.black)
+            Spacer()
             Button("Create Game"){
                 let game = Game(homeTeam: Team(name: homeTeamName), awayTeam: Team(name: awayTeamName))
                 modelContext.insert(game)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameHeader: View{
-    @ObservedObject var game: Game
+    @Bindable var game: Game
     
     var body: some View{
         HStack{

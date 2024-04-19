@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PeriodView: View {
-    @ObservedObject var game: Game
+    @Bindable var game: Game
     var periodNR: Int
     @State var add = 1
     
     
     var body: some View {
         ZStack{
-            Color(.white)
+            Color(.systemBackground)
                 .ignoresSafeArea()
 
             VStack{
@@ -23,6 +23,8 @@ struct PeriodView: View {
                     .padding()
                 
                 periodRow(period: game.periods[periodNR - 1])
+                    .background(.secondary)
+                    .cornerRadius(10)
                 addShotButtons(game: game, periodNR: periodNR, add: add)
                 Button(action: {
                     if add == 1{
@@ -34,9 +36,10 @@ struct PeriodView: View {
                     Text(add == 1 ? "Add" : "Remove")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(add == 1 ? .white : .red)
+                        .background(add == 1 ? Color(.systemBackground) : .red)
                         
                 })
+                .buttonStyle(PlainButtonStyle())
                 
             }
             .background()
@@ -44,6 +47,7 @@ struct PeriodView: View {
             .padding()
         }
         .navigationTitle("Period \(periodNR)")
+        .navigationBarTitleDisplayMode(.inline)
 //        .toolbar{
 //            Button(action: {
 //                if add == 1{
@@ -59,18 +63,18 @@ struct PeriodView: View {
 }
 
 struct addShotButtons: View{
-    @ObservedObject var game: Game
+    @Bindable var game: Game
     var periodNR: Int
     var add: Int
     var body: some View{
         HStack(alignment: .center){
-//            Button(action: {
-//                addShoot(forHomeTeam: true, add: add)
-//            }, label: {
+            Button(action: {
+                addShoot(forHomeTeam: true, add: add)
+            }, label: {
                 Text("Home")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-             
                     .background(Material.thin)
+                
                     .simultaneousGesture(
                         TapGesture().onEnded {
                             // Handling för en enkel tryckning
@@ -84,7 +88,9 @@ struct addShotButtons: View{
                             }
                         )
                     )
-          //  })
+            })
+            .buttonStyle(PlainButtonStyle())
+          
             
             Button(action: {
                 addShoot(forHomeTeam: false, add: add)
@@ -107,6 +113,7 @@ struct addShotButtons: View{
                         )
                     )
             })
+            .buttonStyle(PlainButtonStyle())
             
 //            Button(action: {
 //                addShoot(forHomeTeam: false)
@@ -122,7 +129,9 @@ struct addShotButtons: View{
 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.green)
+        .background(.secondary)
+        .cornerRadius(10)
+       
     
     }
     func addShoot(forHomeTeam: Bool, add: Int){
