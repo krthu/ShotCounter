@@ -29,4 +29,25 @@ class Period: Identifiable {
     init(number: Int){
         self.number = number
     }
+    
+    func addShoot(forHomeTeam: Bool, add: Int){
+        if forHomeTeam {
+            homeTeamShots += add
+
+        } else{
+  
+            awayTeamShots += add
+        }
+    }
+    
+    func addGoal(forHomeTeam: Bool, add: Int){
+        if forHomeTeam {
+   
+            homeTeamGoals += add
+           
+        } else{
+   
+            awayTeamGoals += add
+        }
+    }
 }

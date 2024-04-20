@@ -14,7 +14,8 @@ class Game: ObservableObject{
 
     var homeTeam: Team
     var awayTeam: Team
-    var periods: [Period] = [] //[Period(number: 1)]
+    @Relationship(deleteRule: .cascade) var periods: [Period]
+    //var periods: [Period] = [] //[Period(number: 1)]
     
     var homeShots: Int {
         var totalshots = 0

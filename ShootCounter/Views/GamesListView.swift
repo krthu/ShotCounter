@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct GamesListView: View {
     
@@ -72,7 +73,22 @@ struct GameRow: View{
 struct TeamInfo: View {
     var team: Team
     var body: some View {
-        Text(team.name)
+        VStack{
+            if let logodata = team.logoData,
+               let uiImage = UIImage(data: logodata){
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+            }else{
+                Image(systemName: "shield.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+            }
+            Text(team.name)
+        }
+        
     }
 }
 
@@ -82,6 +98,9 @@ struct NewGameSheet: View {
     @State var homeTeamName: String = ""
     @State var awayTeamName: String = ""
     
+    @State var selectedPhoto: PhotosPickerItem?
+    @State var selectedPhotoData: Data?
+    
     var body: some View {
         VStack{
             Text("New Game")
@@ -90,16 +109,42 @@ struct NewGameSheet: View {
                 .frame(maxWidth: .infinity)
                 
             Spacer()
-            TextField("Home team name", text: $homeTeamName)
-                .padding()
-                .border(.black)
-            
-            TextField("Away team name", text: $awayTeamName)
-                .padding()
-                .border(.black)
-            Spacer()
+            Form{
+                Section(header: Text("Home team")){
+                    TextField("Home team name", text: $homeTeamName)
+                    HStack{
+                        PhotosPicker(selection: $selectedPhoto, matching: .images){
+                            Label("Logo", systemImage: "shield.fill")
+                        }
+                        Spacer()
+                        if let selectedPhotoData,
+                           let uiImage = UIImage(data: selectedPhotoData){
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                        }
+                    }
+
+      
+                    
+                }
+                    //.border(.black)
+                Section(header: Text("Away Team")){
+                    
+                    TextField("Away team name", text: $awayTeamName)
+                      
+                    Label("Logo", systemImage: "shield.fill")
+                    //.border(.black)
+                }
+            }
+            .task(id: selectedPhoto, {
+                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self){
+                    selectedPhotoData = data
+                }
+            })
             Button("Create Game"){
-                let game = Game(homeTeam: Team(name: homeTeamName), awayTeam: Team(name: awayTeamName))
+                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoData), awayTeam: Team(name: awayTeamName))
                 modelContext.insert(game)
                 self.presentationMode.wrappedValue.dismiss()
             }
