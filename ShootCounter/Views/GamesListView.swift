@@ -14,6 +14,7 @@ struct GamesListView: View {
     @Query var games: [Game]
     @State var showNewGameSheet = false
     @Environment(\.modelContext) var modelContext
+   
     
     var body: some View {
         NavigationStack{
@@ -74,18 +75,8 @@ struct TeamInfo: View {
     var team: Team
     var body: some View {
         VStack{
-            if let logodata = team.logoData,
-               let uiImage = UIImage(data: logodata){
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-            }else{
-                Image(systemName: "shield.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-            }
+            TeamLogoImageView(imageData: team.logoData, maxHeight: 60)
+
             Text(team.name)
         }
         
