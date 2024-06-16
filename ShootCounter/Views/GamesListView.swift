@@ -75,7 +75,7 @@ struct TeamInfo: View {
     var team: Team
     var body: some View {
         VStack{
-            TeamLogoImageView(imageData: team.logoData, maxHeight: 60)
+            TeamLogoImageView(imageData: team.logoData, maxHeight: 50)
 
             Text(team.name)
         }
