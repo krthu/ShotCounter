@@ -14,7 +14,7 @@ struct GamesListView: View {
     @Query var games: [Game]
     @State var showNewGameSheet = false
     @Environment(\.modelContext) var modelContext
-   
+    
     
     var body: some View {
         NavigationStack{
@@ -69,11 +69,11 @@ struct GameRow: View{
                 Spacer()
                 TeamInfo(team: game.awayTeam)
                     .frame(width: 100)
-                    
+                
             }
             .padding()
         }
-
+        
     }
 }
 
@@ -82,7 +82,7 @@ struct TeamInfo: View {
     var body: some View {
         VStack{
             TeamLogoImageView(imageData: team.logoData, maxHeight: 50)
-
+            
             Text(team.name)
         }
         
@@ -95,8 +95,11 @@ struct NewGameSheet: View {
     @State var homeTeamName: String = ""
     @State var awayTeamName: String = ""
     
-    @State var selectedPhoto: PhotosPickerItem?
-    @State var selectedPhotoData: Data?
+    @State var selectedPhotoHomeTeam: PhotosPickerItem?
+    @State var selectedPhotoDataHomeTeam: Data?
+    
+    @State var selectedPhotoAwayTeam: PhotosPickerItem?
+    @State var selectedPhotoDataAwayTeam: Data?
     
     @State var selectedDate: Date = Date()
     
@@ -106,7 +109,7 @@ struct NewGameSheet: View {
                 .font(.title)
                 .bold()
                 .frame(maxWidth: .infinity)
-                
+            
             Spacer()
             Form{
                 Section(header: Text("Game")){
@@ -117,48 +120,79 @@ struct NewGameSheet: View {
                 Section(header: Text("Home team")){
                     TextField("Home team name", text: $homeTeamName)
                     HStack{
-                        PhotosPicker(selection: $selectedPhoto, matching: .images){
+                        PhotosPicker(selection: $selectedPhotoHomeTeam, matching: .images){
                             Label("Logo", systemImage: "shield.fill")
                         }
                         Spacer()
-                        if let selectedPhotoData,
-                           let uiImage = UIImage(data: selectedPhotoData){
+                        if let selectedPhotoDataHomeTeam,
+                           let uiImage = UIImage(data: selectedPhotoDataHomeTeam){
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 40, height: 40)
                         }
                     }
-
-      
+                    
+                    
                     
                 }
-                    //.border(.black)
+  
                 Section(header: Text("Away Team")){
                     
                     TextField("Away team name", text: $awayTeamName)
-                      
-                    Label("Logo", systemImage: "shield.fill")
                     //.border(.black)
+                    HStack{
+                        PhotosPicker(selection: $selectedPhotoAwayTeam, matching: .images){
+                            Label("Logo", systemImage: "shield.fill")
+                        }
+                        Spacer()
+                        if let selectedPhotoDataAwayTeam,
+                           let uiImage = UIImage(data: selectedPhotoDataAwayTeam){
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                        }
+                    }
                 }
             }
-            .task(id: selectedPhoto, {
-                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self){
-                    selectedPhotoData = data
-                }
+            
+            .task(id: selectedPhotoHomeTeam, {
+                //                if let data = try? await selectedPhotoHomeTeam?.loadTransferable(type: Data.self){
+                //                    selectedPhotoDataHomeTeam = data
+                //                }
+                await loadSelectedImageData(from: selectedPhotoHomeTeam, to: $selectedPhotoDataHomeTeam)
             })
+            .task(id: selectedPhotoAwayTeam, {
+                //                if let data = try? await selectedPhotoHomeTeam?.loadTransferable(type: Data.self){
+                //                    selectedPhotoDataHomeTeam = data
+                //                }
+                await loadSelectedImageData(from: selectedPhotoAwayTeam, to: $selectedPhotoDataAwayTeam)
+            })
+            
             Button("Create Game"){
-                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoData), awayTeam: Team(name: awayTeamName), date: selectedDate)
+                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoDataHomeTeam), awayTeam: Team(name: awayTeamName, logoData: selectedPhotoDataAwayTeam), date: selectedDate)
                 modelContext.insert(game)
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
         .padding()
     }
+    @MainActor
+    func loadSelectedImageData(from pickerItem: PhotosPickerItem?, to dataBinding: Binding<Data?>) async{
+        if let pickerItem = pickerItem, let data = try? await pickerItem.loadTransferable(type: Data.self){
+            dataBinding.wrappedValue = data
+            
+        }
+    }
+//    @MainActor
+//    private func updateSelectedPhotoData(to dataBinding: Binding<Data?>, with data: Data) {
+//        dataBinding.wrappedValue = data
+//    }
 }
-
-
-
-#Preview {
-    GamesListView()
-}
+    
+    
+    
+    #Preview {
+        GamesListView()
+    }
