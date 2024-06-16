@@ -57,17 +57,23 @@ struct GameRow: View{
     var game: Game
     
     var body: some View{
-        HStack{
-            TeamInfo(team: game.homeTeam)
-                .frame(width: 100)
-            Spacer()
-            Text("\(game.homeGoals) - \(game.awayGoals)")
-            Spacer()
-            TeamInfo(team: game.awayTeam)
-                .frame(width: 100)
-                
+        VStack{
+            if let date = game.date{
+                Text("Date: \(date.formatted())")
+            }
+            HStack{
+                TeamInfo(team: game.homeTeam)
+                    .frame(width: 100)
+                Spacer()
+                Text("\(game.homeGoals) - \(game.awayGoals)")
+                Spacer()
+                TeamInfo(team: game.awayTeam)
+                    .frame(width: 100)
+                    
+            }
+            .padding()
         }
-        .padding()
+
     }
 }
 
@@ -92,6 +98,8 @@ struct NewGameSheet: View {
     @State var selectedPhoto: PhotosPickerItem?
     @State var selectedPhotoData: Data?
     
+    @State var selectedDate: Date = Date()
+    
     var body: some View {
         VStack{
             Text("New Game")
@@ -101,6 +109,11 @@ struct NewGameSheet: View {
                 
             Spacer()
             Form{
+                Section(header: Text("Game")){
+                    DatePicker("Date:", selection: $selectedDate)
+                }
+                
+                
                 Section(header: Text("Home team")){
                     TextField("Home team name", text: $homeTeamName)
                     HStack{
@@ -135,7 +148,7 @@ struct NewGameSheet: View {
                 }
             })
             Button("Create Game"){
-                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoData), awayTeam: Team(name: awayTeamName))
+                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoData), awayTeam: Team(name: awayTeamName), date: selectedDate)
                 modelContext.insert(game)
                 self.presentationMode.wrappedValue.dismiss()
             }
