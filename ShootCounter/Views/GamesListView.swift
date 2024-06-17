@@ -10,8 +10,8 @@ import SwiftData
 import PhotosUI
 
 struct GamesListView: View {
-    
-    @Query var games: [Game]
+    @Query(sort: \Game.date, order: .reverse)
+    var games: [Game]
     @State var showNewGameSheet = false
     @Environment(\.modelContext) var modelContext
     
