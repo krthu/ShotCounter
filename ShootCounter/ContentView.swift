@@ -15,8 +15,24 @@ struct ContentView: View {
     var body: some View {
         //        GameView(game: Game(homeTeam: Team(name: "Vaksala"), awayTeam: Team(name: "Sundsvall"), periods: [Period( number: 1, homeTeamShots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0 )]))
         //    }
-        GamesListView()
+      //  GamesListView()
          //   .onAppear(perform: deleteSwiftModelData)
+        VStack{
+            TabView{
+                GamesListView()
+                    .tabItem {
+                        Label("Games", systemImage: "list.bullet" )
+                    }
+//                NewGameSheet()
+//                    .tabItem {
+//                        Label("Add Game", systemImage: "plus.square")
+//                    }
+                
+            }
+            
+        }
+        
+        
     }
         
     

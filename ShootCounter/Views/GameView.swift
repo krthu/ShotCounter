@@ -17,7 +17,7 @@ struct GameView: View {
                 List{
                     ForEach(game.periods.sorted(by:{$0.number < $1.number} )){ period in
                         Section(header: Text("Period: \(period.number)")){
-                            NavigationLink(destination: PeriodView(game: game, periodNR: period.number)){
+                            NavigationLink(destination: PeriodView(game: game, period: period)){
                                 periodRow(period: period)
                                 
                             }
@@ -88,7 +88,7 @@ struct GameView: View {
                 }
                 Spacer()
                 VStack{
-                    Text("GOALS")
+                    Text("SHOOTS")
                         .font(.system(size: 8))
                         .foregroundColor(.secondary)
                     Text("\(period.awayTeamShots)")
