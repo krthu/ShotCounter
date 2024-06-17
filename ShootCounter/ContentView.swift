@@ -21,8 +21,12 @@ struct ContentView: View {
             TabView{
                 GamesListView()
                     .tabItem {
-                        Label("Games", systemImage: "sportscourt" )
+                        Label("Games", systemImage: "list.bullet" )
                     }
+//                NewGameSheet()
+//                    .tabItem {
+//                        Label("Add Game", systemImage: "plus.square")
+//                    }
                 
             }
             
