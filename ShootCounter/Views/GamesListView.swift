@@ -33,7 +33,7 @@ struct GamesListView: View {
                 .listRowSpacing(10)
             }
             .toolbar{
-                Button("New Note", systemImage: "plus", action: {showNewGameSheet = true})
+                Button("New Game", systemImage: "plus", action: {showNewGameSheet = true})
             }
             .navigationTitle("Games")
         }

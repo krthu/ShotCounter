@@ -27,6 +27,8 @@ struct ContentView: View {
 //                    .tabItem {
 //                        Label("Add Game", systemImage: "plus.square")
 //                    }
+                ClubsListView()
+                    .tabItem { Label("Clubs", systemImage: "shield") }
                 
             }
             
