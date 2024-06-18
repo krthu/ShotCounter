@@ -41,8 +41,13 @@ struct AddClubSheet: View{
     
     
     var body: some View{
-        VStack{
+        Text("Create Club")
+            .font(.title3)
+            .bold()
+            .padding()
+        Form{
             TextField("Name:", text: $name)
+                
             HStack{
                 PhotosPicker(selection: $selectedLogo, matching: .images){
                     Label("Logo", systemImage: "shield.fill")
@@ -60,14 +65,16 @@ struct AddClubSheet: View{
             
             
         }
+        Button("Create"){
+            
+        }
+   
         .task(id: selectedLogo, {
-            //                if let data = try? await selectedPhotoHomeTeam?.loadTransferable(type: Data.self){
-            //                    selectedPhotoDataHomeTeam = data
-            //                }
             await loadSelectedImageData(from: selectedLogo, to: $selectedLogoData)
         })
         
     }
+    
     @MainActor
     func loadSelectedImageData(from pickerItem: PhotosPickerItem?, to dataBinding: Binding<Data?>) async{
         if let pickerItem = pickerItem, let data = try? await pickerItem.loadTransferable(type: Data.self){
