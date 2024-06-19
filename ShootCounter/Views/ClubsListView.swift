@@ -17,8 +17,10 @@ struct ClubsListView: View {
         NavigationStack{
             List{
                 ForEach(clubs){ club in
-                    ClubListItemView(club: club)
+                    NavigationLink(destination: ClubView(club: club)){
+                        ClubListItemView(club: club)
                         //.frame(maxWidth: .infinity, maxHeight: 50)
+                    }
                 }
                 .onDelete(perform: { indexSet in
                     deleteClub(indexSet)

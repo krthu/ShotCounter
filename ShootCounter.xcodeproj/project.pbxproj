@@ -24,6 +24,7 @@
 		6D86DF682BD27A0900E6311C /* GamesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D86DF672BD27A0900E6311C /* GamesListView.swift */; };
 		6DA63D2D2C208C1A00C0BB04 /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA63D2C2C208C1A00C0BB04 /* Club.swift */; };
 		6DA63D2F2C21D24100C0BB04 /* ClubsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA63D2E2C21D24100C0BB04 /* ClubsListView.swift */; };
+		6DA63D312C232BD600C0BB04 /* ClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA63D302C232BD600C0BB04 /* ClubView.swift */; };
 		6DFE1A732C18BFD800A1713B /* ClubLogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE1A722C18BFD800A1713B /* ClubLogoImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		6D86DF672BD27A0900E6311C /* GamesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListView.swift; sourceTree = "<group>"; };
 		6DA63D2C2C208C1A00C0BB04 /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		6DA63D2E2C21D24100C0BB04 /* ClubsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListView.swift; sourceTree = "<group>"; };
+		6DA63D302C232BD600C0BB04 /* ClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubView.swift; sourceTree = "<group>"; };
 		6DFE1A722C18BFD800A1713B /* ClubLogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogoImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -180,6 +182,7 @@
 				6D86DF652BD19DAD00E6311C /* GameHeader.swift */,
 				6D86DF672BD27A0900E6311C /* GamesListView.swift */,
 				6DA63D2E2C21D24100C0BB04 /* ClubsListView.swift */,
+				6DA63D302C232BD600C0BB04 /* ClubView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DA63D312C232BD600C0BB04 /* ClubView.swift in Sources */,
 				6D86DF5F2BD11FC900E6311C /* GamesViewModel.swift in Sources */,
 				6D86DF642BD19C5C00E6311C /* PeriodView.swift in Sources */,
 				6DA63D2F2C21D24100C0BB04 /* ClubsListView.swift in Sources */,
