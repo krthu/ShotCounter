@@ -43,19 +43,12 @@ struct ClubView: View {
             club.teams.remove(at: index)
         }
     }
-//    func deleteClub(_ indexSet: IndexSet){
-//        for index in indexSet {
-//            let club = clubs[index]
-//            modelContext.delete(club)
-//        }
-//    }
 }
 
 struct AddTeamSheet: View {
     @Binding var club: Club
     @State var name = ""
     @Environment(\.modelContext) var modelContext
-//    @Environment(\.presentationMode.wrappedValue.dismiss()) var dismiss
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -78,7 +71,7 @@ struct AddTeamSheet: View {
         let team = Team(name: name)
         if !club.teams.contains(where: {$0.name.lowercased() == team.name.lowercased() }){
             club.teams.append(team)
-//                    modelContext.insert(club)
+
             print(club)
             dismiss()
         }
