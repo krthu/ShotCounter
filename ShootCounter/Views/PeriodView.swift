@@ -76,7 +76,7 @@ struct shotButton: View {
         }, label: {
             VStack{
                 Spacer()
-                TeamLogoImageView(imageData: team.logoData, maxHeight: 100)
+                ClubLogoImageView(imageData: team.logoData, maxHeight: 100)
                 Text(team.name)
                   //  .frame(maxWidth: .infinity, maxHeight: .infinity)
                   //  .background(Material.thin)

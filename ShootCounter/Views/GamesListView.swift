@@ -13,7 +13,7 @@ struct GamesListView: View {
     @Query(sort: \Game.date, order: .reverse)
     var games: [Game]
     @State var showNewGameSheet = false
-    @Environment(\.modelContext) var modelContext
+    @Environment(\.modelContext) private var modelContext
     
     
     var body: some View {
@@ -81,7 +81,7 @@ struct TeamInfo: View {
     var team: Team
     var body: some View {
         VStack{
-            TeamLogoImageView(imageData: team.logoData, maxHeight: 50)
+            ClubLogoImageView(imageData: team.logoData, maxHeight: 50)
             
             Text(team.name)
         }

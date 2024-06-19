@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Game: ObservableObject{
+class Game: ObservableObject, Identifiable{
     var id = UUID()
 
     var homeTeam: Team

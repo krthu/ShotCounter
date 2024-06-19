@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Club: ObservableObject {
+class Club: ObservableObject, Identifiable {
     let id: UUID = UUID()
     var name: String
     var logoData: Data?

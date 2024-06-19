@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TeamLogoImageView: View {
+struct ClubLogoImageView: View {
     var imageData: Data?
     var maxWidth: CGFloat = .infinity
     var maxHeight: CGFloat = .infinity

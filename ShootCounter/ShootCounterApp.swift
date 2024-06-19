@@ -16,7 +16,7 @@ struct ShootCounterApp: App {
             ContentView()
         }
         .modelContainer(for: [Game.self, Club.self])
-       // .modelContainer(for: Club.self)
+        //.modelContainer(for: [Game.self])
     }
     
     

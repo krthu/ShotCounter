@@ -12,14 +12,21 @@ import PhotosUI
 struct ClubsListView: View {
     @Query var clubs: [Club]
     @State var showAddClubSheet = false
-    @Environment(\.modelContext) var modelContext
+    @Environment(\.modelContext) private var modelContext
     var body: some View {
         NavigationStack{
-            VStack{
+            List{
                 ForEach(clubs){ club in
-                    Text(club.name)
+                    ClubListItemView(club: club)
+                        //.frame(maxWidth: .infinity, maxHeight: 50)
                 }
+                .onDelete(perform: { indexSet in
+                    deleteClub(indexSet)
+                })
+              //  .frame(maxWidth: .infinity)
             }
+            
+   
             .toolbar{
                 Button("New Club", systemImage: "plus", action: {showAddClubSheet = true})
             }
@@ -32,12 +39,36 @@ struct ClubsListView: View {
   
 
     }
+    
+    func deleteClub(_ indexSet: IndexSet){
+        for index in indexSet {
+            let club = clubs[index]
+            modelContext.delete(club)
+        }
+    }
+}
+
+struct ClubListItemView: View {
+    var club: Club
+    var body: some View {
+        HStack{
+            ClubLogoImageView(imageData: club.logoData, maxWidth: 70, maxHeight: 70)
+            VStack{
+                Text(club.name)
+                    .bold()
+            }
+           
+        }
+ 
+    }
 }
 
 struct AddClubSheet: View{
     @State var name = ""
     @State var selectedLogo: PhotosPickerItem?
     @State var selectedLogoData: Data?
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.presentationMode) var presentationMode
     
     
     var body: some View{
@@ -66,7 +97,9 @@ struct AddClubSheet: View{
             
         }
         Button("Create"){
-            
+            let newClub = Club(name: name, logoData: selectedLogoData)
+            modelContext.insert(newClub)
+            presentationMode.wrappedValue.dismiss()
         }
    
         .task(id: selectedLogo, {
