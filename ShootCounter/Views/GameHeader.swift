@@ -12,7 +12,7 @@ struct GameHeader: View{
     
     var body: some View{
         HStack{
-            GameTeamInfo(teamName: game.homeTeam.name, team: game.homeTeam, shots: game.homeShots)
+            GameTeamInfo(teamName: game.homeTeam.name, team: game.homeTeam, club: game.homeClub, shots: game.homeShots)
             
             Spacer()
             VStack{
@@ -25,7 +25,7 @@ struct GameHeader: View{
             
             Spacer()
             
-            GameTeamInfo(teamName: game.awayTeam.name, team: game.awayTeam, shots: game.awayShots)
+            GameTeamInfo(teamName: game.awayTeam.name, team: game.awayTeam, club: game.awayClub, shots: game.awayShots)
             
         }
         .padding(.horizontal, 20)
@@ -35,11 +35,13 @@ struct GameHeader: View{
 struct GameTeamInfo: View{
     var teamName: String
     var team: Team
+    var club: Club
     var shots: Int
     var body: some View{
         VStack{
             //Text(teamName)
-            TeamInfo(team: team)
+            TeamInfo(team: team, club: club)
+                .padding(.bottom, 5)
             Text("SHOTS")
                 .font(.system(size: 8))
                 .foregroundColor(.secondary)

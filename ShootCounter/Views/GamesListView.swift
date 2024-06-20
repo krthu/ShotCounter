@@ -63,12 +63,12 @@ struct GameRow: View{
                 Text("Date: \(date.formatted())")
             }
             HStack{
-                TeamInfo(team: game.homeTeam)
+                TeamInfo(team: game.homeTeam, club: game.homeClub)
                     .frame(width: 100)
                 Spacer()
                 Text("\(game.homeGoals) - \(game.awayGoals)")
                 Spacer()
-                TeamInfo(team: game.awayTeam)
+                TeamInfo(team: game.awayTeam, club: game.awayClub)
                     .frame(width: 100)
                 
             }
@@ -80,11 +80,14 @@ struct GameRow: View{
 
 struct TeamInfo: View {
     var team: Team
+    var club: Club
     var body: some View {
         VStack{
-            ClubLogoImageView(imageData: team.logoData, maxHeight: 50)
-            
+            ClubLogoImageView(imageData: club.logoData, maxHeight: 50)
+            Text(club.name)
             Text(team.name)
+                .font(.caption)
+             
         }
         
     }

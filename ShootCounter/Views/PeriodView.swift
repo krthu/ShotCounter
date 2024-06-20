@@ -68,6 +68,7 @@ struct shotButton: View {
     var add: Int
     var buttonForHomeTeam: Bool
     var team: Team
+    var club: Club
     
     
     var body: some View {
@@ -76,7 +77,7 @@ struct shotButton: View {
         }, label: {
             VStack{
                 Spacer()
-                ClubLogoImageView(imageData: team.logoData, maxHeight: 100)
+                ClubLogoImageView(imageData: club.logoData, maxHeight: 100)
                 Text(team.name)
                   //  .frame(maxWidth: .infinity, maxHeight: .infinity)
                   //  .background(Material.thin)
@@ -111,8 +112,8 @@ struct addShotButtons: View{
     var add: Int
     var body: some View{
         HStack(alignment: .center){
-            shotButton(period: period, add: add, buttonForHomeTeam: true, team: game.homeTeam)
-            shotButton(period: period, add: add, buttonForHomeTeam: false, team: game.awayTeam)
+            shotButton(period: period, add: add, buttonForHomeTeam: true, team: game.homeTeam, club: game.homeClub)
+            shotButton(period: period, add: add, buttonForHomeTeam: false, team: game.awayTeam, club: game.awayClub)
 
 
         }
