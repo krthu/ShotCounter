@@ -38,7 +38,7 @@ struct GamesListView: View {
             .navigationTitle("Games")
         }
         .sheet(isPresented: $showNewGameSheet, content: {
-            NewGameSheet()
+            NewGameSheet2()
                 .presentationDetents([.medium])
         })
         
@@ -86,6 +86,81 @@ struct TeamInfo: View {
             Text(team.name)
         }
         
+    }
+}
+
+struct NewGameSheet2: View {
+    @Query var clubs: [Club]
+    @State var homeClubIndex = 0
+    @State var homeTeamIndex = 0
+    
+    @State var awayClubIndex = 0
+    @State var awayTeamIndex = 0
+    
+    
+    var body: some View {
+        VStack{
+            Text("Create Game")
+                .font(.title3)
+            Form{
+                TeamPickerSection(clubIndex: $homeClubIndex, teamIndex: $homeTeamIndex, clubs: clubs, homeTeam: true)
+                
+                TeamPickerSection(clubIndex: $awayClubIndex, teamIndex: $awayTeamIndex, clubs: clubs, homeTeam: false)
+                
+//                Section("Home Team"){
+//                    Picker("Home Club", selection: $homeClubIndex){
+//                        ForEach(0..<clubs.count, id:\.self){ index in
+//                            let club = clubs[index]
+//                            HStack{
+//                                Text(club.name)
+//                            }
+//                        }
+//                    }
+//                    TeamPickerView(teams: clubs[homeClubIndex].teams)
+//                        .id(homeClubIndex)
+//                }
+            }
+        }
+    }
+}
+struct TeamPickerSection: View {
+    @Binding var clubIndex: Int
+    @Binding var teamIndex: Int
+    var clubs: [Club]
+    var homeTeam: Bool
+    
+    
+    var body: some View {
+        Section(homeTeam ? "Home Team" : "Away Team"){
+            Picker(homeTeam ? "Home Club" :  "Away Club" , selection: $clubIndex){
+                ForEach(0..<clubs.count, id:\.self){ index in
+                    let club = clubs[index]
+                    HStack{
+                        Text(club.name)
+                    }
+                }
+            }
+            TeamPickerView(teams: clubs[clubIndex].teams)
+                .id(clubIndex)
+        }
+    }
+}
+
+
+
+struct TeamPickerView: View {
+    
+    @State var homeTeamIndex = 0
+    @State var teams: [Team]
+    
+    
+    var body: some View {
+        Picker("Home Team", selection: $homeTeamIndex){
+            ForEach(0..<teams.count, id:\.self){ index in
+                let team = teams[index]
+                Text(team.name)
+            }
+        }
     }
 }
 
@@ -171,9 +246,9 @@ struct NewGameSheet: View {
             })
             
             Button("Create Game"){
-                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoDataHomeTeam), awayTeam: Team(name: awayTeamName, logoData: selectedPhotoDataAwayTeam), date: selectedDate)
-                modelContext.insert(game)
-                self.presentationMode.wrappedValue.dismiss()
+//                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoDataHomeTeam), awayTeam: Team(name: awayTeamName, logoData: selectedPhotoDataAwayTeam), date: selectedDate)
+//                modelContext.insert(game)
+//                self.presentationMode.wrappedValue.dismiss()
             }
         }
         .padding()

@@ -16,7 +16,7 @@ struct ClubView: View {
         VStack{
             ClubLogoImageView(imageData: club.logoData, maxHeight: 100)
                 .padding()
-            Form{
+            List{
                 Section("Teams"){
                     ForEach(club.teams){ team in
                         Text(team.name)
