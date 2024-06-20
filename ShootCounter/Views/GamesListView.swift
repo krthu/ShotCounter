@@ -16,6 +16,7 @@ struct GamesListView: View {
     @Environment(\.modelContext) private var modelContext
     
     
+    
     var body: some View {
         NavigationStack{
             VStack{
@@ -97,12 +98,21 @@ struct NewGameSheet2: View {
     @State var awayClubIndex = 0
     @State var awayTeamIndex = 0
     
+    @State var selectedDate = Date()
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    
     
     var body: some View {
         VStack{
             Text("Create Game")
                 .font(.title3)
             Form{
+                Section("Game Info"){
+                    DatePicker("Date:", selection: $selectedDate)
+                }
+                
+                
                 TeamPickerSection(clubIndex: $homeClubIndex, teamIndex: $homeTeamIndex, clubs: clubs, homeTeam: true)
                 
                 TeamPickerSection(clubIndex: $awayClubIndex, teamIndex: $awayTeamIndex, clubs: clubs, homeTeam: false)
@@ -119,6 +129,14 @@ struct NewGameSheet2: View {
 //                    TeamPickerView(teams: clubs[homeClubIndex].teams)
 //                        .id(homeClubIndex)
 //                }
+            }
+            Button("Create"){
+            
+                let game = Game(homeClub: clubs[homeClubIndex], homeTeam: clubs[homeClubIndex].teams[homeTeamIndex], awayClub: clubs[awayClubIndex], awayTeam: clubs[awayClubIndex].teams[awayTeamIndex], date: selectedDate)
+                
+                modelContext.insert(game)
+                dismiss()
+                
             }
         }
     }
