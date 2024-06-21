@@ -17,7 +17,7 @@ class Game: ObservableObject, Identifiable{
     var awayClub: Club
     var awayTeam: Team
     @Relationship(deleteRule: .cascade) var periods: [Period]
-    var date: Date?
+    var date: Date
     var homeShots: Int {
         var totalshots = 0
         for period in periods {
@@ -50,7 +50,7 @@ class Game: ObservableObject, Identifiable{
         return totalGoals
     }
     
-    init(homeClub: Club, homeTeam: Team, awayClub: Club, awayTeam: Team, date: Date? = nil) {
+    init(homeClub: Club, homeTeam: Team, awayClub: Club, awayTeam: Team, date: Date) {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
         self.periods = [Period(number: 1)]

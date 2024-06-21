@@ -21,10 +21,22 @@ struct GamesListView: View {
         NavigationStack{
             VStack{
                 List{
+                    var lastDate: String? = nil
                     ForEach(games){ game in
-                        NavigationLink(destination: GameView(game: game)){
-                            GameRow(game: game)
+                        let gameDate = game.date.formatted(date: .complete, time: .omitted)
+                        if gameDate != lastDate{
+                            Section(gameDate){
+                                NavigationLink(destination: GameView(game: game)){
+                                    GameRow(game: game)
+                                }
+                            }
                         }
+                        //else {
+//                            NavigationLink(destination: GameView(game: game)){
+//                                GameRow(game: game)
+//                            }
+//                        }
+                     //   lastDate = gameDate
                     }
                     .onDelete(perform: { indexSet in
                         deleteGame(indexSet)
@@ -59,9 +71,9 @@ struct GameRow: View{
     
     var body: some View{
         VStack{
-            if let date = game.date{
-                Text("Date: \(date.formatted())")
-            }
+          //  if let date = game.date{
+          //      Text("Date: \(date.formatted())")
+          //  }
             HStack{
                 TeamInfo(team: game.homeTeam, club: game.homeClub)
                     .frame(width: 100)
@@ -108,8 +120,10 @@ struct NewGameSheet2: View {
     
     var body: some View {
         VStack{
-            Text("Create Game")
-                .font(.title3)
+            Text("New Game")
+                .font(.title2)
+                .bold()
+                .padding()
             Form{
                 Section("Game Info"){
                     DatePicker("Date:", selection: $selectedDate)
@@ -161,7 +175,7 @@ struct TeamPickerSection: View {
                     }
                 }
             }
-            TeamPickerView(teams: clubs[clubIndex].teams)
+            TeamPickerView(teamIndex: $teamIndex, teams: clubs[clubIndex].teams)
                 .id(clubIndex)
         }
     }
@@ -171,12 +185,12 @@ struct TeamPickerSection: View {
 
 struct TeamPickerView: View {
     
-    @State var homeTeamIndex = 0
-    @State var teams: [Team]
+    @Binding var teamIndex: Int
+    var teams: [Team]
     
     
     var body: some View {
-        Picker("Home Team", selection: $homeTeamIndex){
+        Picker("Home Team", selection: $teamIndex){
             ForEach(0..<teams.count, id:\.self){ index in
                 let team = teams[index]
                 Text(team.name)

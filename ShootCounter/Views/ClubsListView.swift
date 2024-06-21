@@ -10,13 +10,15 @@ import SwiftData
 import PhotosUI
 
 struct ClubsListView: View {
-    @Query var clubs: [Club]
+    @Query(sort: \Club.name) var clubs: [Club]
     @State var showAddClubSheet = false
     @Environment(\.modelContext) private var modelContext
+  
     var body: some View {
         NavigationStack{
             List{
                 ForEach(clubs){ club in
+                
                     NavigationLink(destination: ClubView(club: club)){
                         ClubListItemView(club: club)
                         //.frame(maxWidth: .infinity, maxHeight: 50)
