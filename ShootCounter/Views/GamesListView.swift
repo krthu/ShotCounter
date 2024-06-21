@@ -176,7 +176,7 @@ struct TeamPickerSection: View {
                 }
             }
             TeamPickerView(teamIndex: $teamIndex, teams: clubs[clubIndex].teams)
-                .id(clubIndex)
+        
         }
     }
 }
