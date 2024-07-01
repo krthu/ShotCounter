@@ -21,29 +21,25 @@ struct GamesListView: View {
         NavigationStack{
             VStack{
                 List{
-                    var lastDate: String? = nil
-                    ForEach(games){ game in
-                        let gameDate = game.date.formatted(date: .complete, time: .omitted)
-                        if gameDate != lastDate{
-                            Section(gameDate){
+                    ForEach(groupedGames, id: \.key){ date, games in
+                        Section(date){
+                            ForEach(games){ game in
+                                
                                 NavigationLink(destination: GameView(game: game)){
                                     GameRow(game: game)
+                                    
                                 }
                             }
+                            .onDelete(perform: { indexSet in
+                                deleteGame(indexSet)
+                            })
+                            
                         }
-                        //else {
-//                            NavigationLink(destination: GameView(game: game)){
-//                                GameRow(game: game)
-//                            }
-//                        }
-                     //   lastDate = gameDate
+                        
+                        
                     }
-                    .onDelete(perform: { indexSet in
-                        deleteGame(indexSet)
-                    })
-                    
                 }
-                .listRowSpacing(10)
+                .listRowSpacing(5)
             }
             .toolbar{
                 Button("New Game", systemImage: "plus", action: {showNewGameSheet = true})
@@ -56,6 +52,13 @@ struct GamesListView: View {
         })
         
         
+    }
+    
+    private var groupedGames: [(key: String, value: [Game])] {
+        Dictionary(grouping: games) { game in
+            game.date.formatted(date: .complete, time: .omitted)
+        }
+        .sorted { $0.key > $1.key }
     }
     
     func deleteGame(_ indexSet: IndexSet){
@@ -71,9 +74,7 @@ struct GameRow: View{
     
     var body: some View{
         VStack{
-          //  if let date = game.date{
-          //      Text("Date: \(date.formatted())")
-          //  }
+
             HStack{
                 TeamInfo(team: game.homeTeam, club: game.homeClub)
                     .frame(width: 100)
@@ -99,7 +100,7 @@ struct TeamInfo: View {
             Text(club.name)
             Text(team.name)
                 .font(.caption)
-             
+            
         }
         
     }
@@ -134,21 +135,9 @@ struct NewGameSheet2: View {
                 
                 TeamPickerSection(clubIndex: $awayClubIndex, teamIndex: $awayTeamIndex, clubs: clubs, homeTeam: false)
                 
-//                Section("Home Team"){
-//                    Picker("Home Club", selection: $homeClubIndex){
-//                        ForEach(0..<clubs.count, id:\.self){ index in
-//                            let club = clubs[index]
-//                            HStack{
-//                                Text(club.name)
-//                            }
-//                        }
-//                    }
-//                    TeamPickerView(teams: clubs[homeClubIndex].teams)
-//                        .id(homeClubIndex)
-//                }
             }
             Button("Create"){
-            
+                
                 let game = Game(homeClub: clubs[homeClubIndex], homeTeam: clubs[homeClubIndex].teams[homeTeamIndex], awayClub: clubs[awayClubIndex], awayTeam: clubs[awayClubIndex].teams[awayTeamIndex], date: selectedDate)
                 
                 modelContext.insert(game)
@@ -176,7 +165,7 @@ struct TeamPickerSection: View {
                 }
             }
             TeamPickerView(teamIndex: $teamIndex, teams: clubs[clubIndex].teams)
-        
+            
         }
     }
 }
@@ -199,110 +188,6 @@ struct TeamPickerView: View {
     }
 }
 
-struct NewGameSheet: View {
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.presentationMode) var presentationMode
-    @State var homeTeamName: String = ""
-    @State var awayTeamName: String = ""
-    
-    @State var selectedPhotoHomeTeam: PhotosPickerItem?
-    @State var selectedPhotoDataHomeTeam: Data?
-    
-    @State var selectedPhotoAwayTeam: PhotosPickerItem?
-    @State var selectedPhotoDataAwayTeam: Data?
-    
-    @State var selectedDate: Date = Date()
-    
-    var body: some View {
-        VStack{
-            Text("New Game")
-                .font(.title)
-                .bold()
-                .frame(maxWidth: .infinity)
-            
-            Spacer()
-            Form{
-                Section(header: Text("Game")){
-                    DatePicker("Date:", selection: $selectedDate)
-                }
-                
-                
-                Section(header: Text("Home team")){
-                    TextField("Home team name", text: $homeTeamName)
-                    HStack{
-                        PhotosPicker(selection: $selectedPhotoHomeTeam, matching: .images){
-                            Label("Logo", systemImage: "shield.fill")
-                        }
-                        Spacer()
-                        if let selectedPhotoDataHomeTeam,
-                           let uiImage = UIImage(data: selectedPhotoDataHomeTeam){
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                        }
-                    }
-                    
-                    
-                    
-                }
-  
-                Section(header: Text("Away Team")){
-                    
-                    TextField("Away team name", text: $awayTeamName)
-                    //.border(.black)
-                    HStack{
-                        PhotosPicker(selection: $selectedPhotoAwayTeam, matching: .images){
-                            Label("Logo", systemImage: "shield.fill")
-                        }
-                        Spacer()
-                        if let selectedPhotoDataAwayTeam,
-                           let uiImage = UIImage(data: selectedPhotoDataAwayTeam){
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                        }
-                    }
-                }
-            }
-            
-            .task(id: selectedPhotoHomeTeam, {
-                //                if let data = try? await selectedPhotoHomeTeam?.loadTransferable(type: Data.self){
-                //                    selectedPhotoDataHomeTeam = data
-                //                }
-                await loadSelectedImageData(from: selectedPhotoHomeTeam, to: $selectedPhotoDataHomeTeam)
-            })
-            .task(id: selectedPhotoAwayTeam, {
-                //                if let data = try? await selectedPhotoHomeTeam?.loadTransferable(type: Data.self){
-                //                    selectedPhotoDataHomeTeam = data
-                //                }
-                await loadSelectedImageData(from: selectedPhotoAwayTeam, to: $selectedPhotoDataAwayTeam)
-            })
-            
-            Button("Create Game"){
-//                let game = Game(homeTeam: Team(name: homeTeamName, logoData: selectedPhotoDataHomeTeam), awayTeam: Team(name: awayTeamName, logoData: selectedPhotoDataAwayTeam), date: selectedDate)
-//                modelContext.insert(game)
-//                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
-        .padding()
-    }
-    @MainActor
-    func loadSelectedImageData(from pickerItem: PhotosPickerItem?, to dataBinding: Binding<Data?>) async{
-        if let pickerItem = pickerItem, let data = try? await pickerItem.loadTransferable(type: Data.self){
-            dataBinding.wrappedValue = data
-            
-        }
-    }
-//    @MainActor
-//    private func updateSelectedPhotoData(to dataBinding: Binding<Data?>, with data: Data) {
-//        dataBinding.wrappedValue = data
-//    }
+#Preview {
+    GamesListView()
 }
-    
-    
-    
-    #Preview {
-        GamesListView()
-    }
