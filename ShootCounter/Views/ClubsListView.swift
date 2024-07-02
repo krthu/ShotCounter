@@ -11,8 +11,13 @@ import PhotosUI
 
 struct ClubsListView: View {
     @Query(sort: \Club.name) var clubs: [Club]
+    @Query var games: [Game]
     @State var showAddClubSheet = false
     @Environment(\.modelContext) private var modelContext
+    @State var showAlert = false
+    @State private var clubToDelete: Club?
+    
+    
   
     var body: some View {
         NavigationStack{
@@ -25,11 +30,26 @@ struct ClubsListView: View {
                     }
                 }
                 .onDelete(perform: { indexSet in
-                    
-                    deleteClub(indexSet)
+                    if let index = indexSet.first{
+                        clubToDelete = clubs[index]
+                        showAlert = true
+                    }
+                 //   deleteClub(indexSet)
                 })
               //  .frame(maxWidth: .infinity)
             }
+            .alert("Delete Club", isPresented: $showAlert){
+                Button(role: .destructive){
+                    if let clubToDelete = clubToDelete {
+                        delete(club: clubToDelete)
+                    }
+                } label: {
+                    Text("Delete")
+                }
+                Button("Cancel", role: .cancel){
+                }
+            }
+                
             
    
             .toolbar{
@@ -44,14 +64,41 @@ struct ClubsListView: View {
   
 
     }
-    
-    func deleteClub(_ indexSet: IndexSet){
-        for index in indexSet {
-            let club = clubs[index]
+    func delete(club: Club){
+ //   func deleteClub(_ indexSet: IndexSet){
+     //   for index in indexSet {
+     //       let club = clubs[index]
+   //         deleteGamesWith(club: club)
+            deleteGamesWith(club: club)
             modelContext.delete(club)
+     //   }
+    }
+//    
+//    func deleteGamesWith(club: Club) {
+//        
+////        @Query(filter: #Predicate<Game> { game in
+////            game.awayClub == club || game.homeClub == club
+////        }) var gamesToDelete: [Game]
+////        for game in gamesToDelete{
+////            modelContext.delete(game)
+////        }
+////        
+////        
+////        
+////        let gamesToDelete = modelContext.fetch(#Predicate<Game>).filter{$0.homeClub == club || $0.awayClub == club}
+//        let gamesToDelete = FetchDescriptor(predicate: #Predicate<Game> { game in
+//            game.awayClub == club || game.homeClub == club })
+//    }
+    func deleteGamesWith(club: Club){
+        for game in games {
+            if game.awayClub == club || game.homeClub == club {
+                modelContext.delete(game)
+            }
         }
     }
 }
+    
+
 
 struct ClubListItemView: View {
     var club: Club
@@ -67,6 +114,8 @@ struct ClubListItemView: View {
  
     }
 }
+
+
 
 struct AddClubSheet: View{
     @State var name = ""
@@ -121,6 +170,7 @@ struct AddClubSheet: View{
         }
     }
 }
+
 
 #Preview {
     AddClubSheet()
