@@ -78,8 +78,15 @@ struct GameRow: View{
             HStack{
                 TeamInfo(team: game.homeTeam, club: game.homeClub)
                     .frame(width: 100)
-                Spacer()
-                Text("\(game.homeGoals) - \(game.awayGoals)")
+
+                VStack{
+                    Text(game.date.formatted(date: .omitted, time: .shortened))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("\(game.homeGoals) - \(game.awayGoals)")
+                    Spacer()
+                }
                 Spacer()
                 TeamInfo(team: game.awayTeam, club: game.awayClub)
                     .frame(width: 100)

@@ -25,6 +25,7 @@ struct ClubsListView: View {
                     }
                 }
                 .onDelete(perform: { indexSet in
+                    
                     deleteClub(indexSet)
                 })
               //  .frame(maxWidth: .infinity)
