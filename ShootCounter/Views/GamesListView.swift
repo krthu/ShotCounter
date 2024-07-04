@@ -47,7 +47,7 @@ struct GamesListView: View {
             .navigationTitle("Games")
         }
         .sheet(isPresented: $showNewGameSheet, content: {
-            NewGameSheet2()
+            NewGameSheet()
                 .presentationDetents([.medium])
         })
         
@@ -113,7 +113,7 @@ struct TeamInfo: View {
     }
 }
 
-struct NewGameSheet2: View {
+struct NewGameSheet: View {
     @Query var clubs: [Club]
     @State var homeClubIndex = 0
     @State var homeTeamIndex = 0
@@ -122,13 +122,20 @@ struct NewGameSheet2: View {
     @State var awayTeamIndex = 0
     
     @State var selectedDate = Date()
+    var editGame: Game?
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
+    
+    init(game: Game? = nil ){
+ 
+        self.editGame = game
+
+    }
     
     
     var body: some View {
         VStack{
-            Text("New Game")
+            Text(editGame == nil ? "New Game" : "Edit Game")
                 .font(.title2)
                 .bold()
                 .padding()
@@ -143,15 +150,44 @@ struct NewGameSheet2: View {
                 TeamPickerSection(clubIndex: $awayClubIndex, teamIndex: $awayTeamIndex, clubs: clubs, homeTeam: false)
                 
             }
-            Button("Create"){
-                
-                let game = Game(homeClub: clubs[homeClubIndex], homeTeam: clubs[homeClubIndex].teams[homeTeamIndex], awayClub: clubs[awayClubIndex], awayTeam: clubs[awayClubIndex].teams[awayTeamIndex], date: selectedDate)
-                
-                modelContext.insert(game)
+            Button(editGame == nil ? "Create": "Save"){
+                if let editGame = editGame{
+                    editGame.homeClub = clubs[homeClubIndex]
+                    editGame.homeTeam = clubs[homeClubIndex].teams[homeTeamIndex]
+                    editGame.awayClub = clubs[awayClubIndex]
+                    editGame.awayTeam = clubs[awayClubIndex].teams[awayTeamIndex]
+                    editGame.date = selectedDate
+                } else{
+                    let game = Game(homeClub: clubs[homeClubIndex], homeTeam: clubs[homeClubIndex].teams[homeTeamIndex], awayClub: clubs[awayClubIndex], awayTeam: clubs[awayClubIndex].teams[awayTeamIndex], date: selectedDate)
+                    
+                    modelContext.insert(game)
+                }
                 dismiss()
+                    
                 
             }
         }
+        .onAppear{
+
+            if let game = editGame{
+
+                homeClubIndex = clubs.firstIndex(of: game.homeClub) ?? 0
+                homeTeamIndex = clubs[homeClubIndex].teams.firstIndex(of: game.homeTeam) ?? 0
+                
+                awayClubIndex = clubs.firstIndex(of: game.awayClub) ?? 0
+                awayTeamIndex = clubs[awayClubIndex].teams.firstIndex(of: game.awayTeam) ?? 0
+                
+                selectedDate = game.date
+            
+            }
+        }
+        .onChange(of: homeClubIndex){
+            homeTeamIndex = 0
+        }
+        .onChange(of: awayClubIndex){
+            awayClubIndex = 0
+        }
+        
     }
 }
 struct TeamPickerSection: View {

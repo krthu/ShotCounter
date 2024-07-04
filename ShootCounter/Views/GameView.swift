@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     @Bindable var game: Game
+    @State var showEditGameSheet: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -32,9 +33,19 @@ struct GameView: View {
                     Button("New Period", systemImage: "plus", action: {addPeriod()})
                     
                 }
+                .toolbar{
+                    Button("Edit", systemImage: "pencil", action: {
+                        print(game.homeClub.name)
+                        showEditGameSheet = true
+                    })
+                    
+                }
                 .navigationTitle("Game")
                 .navigationBarTitleDisplayMode(.inline)
             }
+            .sheet(isPresented: $showEditGameSheet, content: {
+                NewGameSheet(game: game)
+            })
         }
     }
         
