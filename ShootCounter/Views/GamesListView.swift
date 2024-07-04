@@ -12,37 +12,43 @@ import PhotosUI
 struct GamesListView: View {
     @Query(sort: \Game.date, order: .reverse)
     var games: [Game]
+    @Query var clubs: [Club]
     @State var showNewGameSheet = false
     @Environment(\.modelContext) private var modelContext
-    
-    
     
     var body: some View {
         NavigationStack{
             VStack{
-                List{
-                    ForEach(groupedGames, id: \.key){ date, games in
-                        Section(date){
-                            ForEach(games){ game in
-                                
-                                NavigationLink(destination: GameView(game: game)){
-                                    GameRow(game: game)
+                if clubs.count == 0 {
+                    Text("Please add a club first!")
+                } else {
+       
+                    List{
+                        ForEach(groupedGames, id: \.key){ date, games in
+                            Section(date){
+                                ForEach(games){ game in
                                     
+                                    NavigationLink(destination: GameView(game: game)){
+                                        GameRow(game: game)
+                                    }
                                 }
+                                .onDelete(perform: { indexSet in
+                                    deleteGame(indexSet)
+                                })
+                                
                             }
-                            .onDelete(perform: { indexSet in
-                                deleteGame(indexSet)
-                            })
+                            
                             
                         }
-                        
-                        
                     }
+                    .listRowSpacing(5)
                 }
-                .listRowSpacing(5)
             }
             .toolbar{
-                Button("New Game", systemImage: "plus", action: {showNewGameSheet = true})
+                if clubs.count != 0 {
+                    Button("New Game", systemImage: "plus", action: {showNewGameSheet = true})
+                }
+
             }
             .navigationTitle("Games")
         }
