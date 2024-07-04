@@ -9,14 +9,15 @@ import Foundation
 import SwiftData
 
 @Model
-class Game: ObservableObject{
+class Game: ObservableObject, Identifiable{
     var id = UUID()
-
+    var homeClub: Club
     var homeTeam: Team
+    
+    var awayClub: Club
     var awayTeam: Team
     @Relationship(deleteRule: .cascade) var periods: [Period]
-    //var periods: [Period] = [] //[Period(number: 1)]
-    var date: Date?
+    var date: Date
     var homeShots: Int {
         var totalshots = 0
         for period in periods {
@@ -49,18 +50,20 @@ class Game: ObservableObject{
         return totalGoals
     }
     
-    init(homeTeam: Team, awayTeam: Team, date: Date? = nil) {
+    init(homeClub: Club, homeTeam: Team, awayClub: Club, awayTeam: Team, date: Date) {
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
         self.periods = [Period(number: 1)]
         self.date = date
+        self.awayClub = awayClub
+        self.homeClub = homeClub
       
     }
     
-    init(homeTeam: Team, awayTeam: Team, periods: [Period]) {
-        self.homeTeam = homeTeam
-        self.awayTeam = awayTeam
-        self.periods = periods
-      
-    }
+//    init(homeTeam: Team, awayTeam: Team, periods: [Period]) {
+//        self.homeTeam = homeTeam
+//        self.awayTeam = awayTeam
+//        self.periods = periods
+//      
+//    }
 }

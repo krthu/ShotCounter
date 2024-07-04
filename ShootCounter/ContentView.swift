@@ -11,7 +11,6 @@ struct ContentView: View {
     
     @Environment(\.modelContext) private var modelContext
     
-    
     var body: some View {
         //        GameView(game: Game(homeTeam: Team(name: "Vaksala"), awayTeam: Team(name: "Sundsvall"), periods: [Period( number: 1, homeTeamShots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0 )]))
         //    }
@@ -27,6 +26,8 @@ struct ContentView: View {
 //                    .tabItem {
 //                        Label("Add Game", systemImage: "plus.square")
 //                    }
+                ClubsListView()
+                    .tabItem { Label("Clubs", systemImage: "shield") }
                 
             }
             

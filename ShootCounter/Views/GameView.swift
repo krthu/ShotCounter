@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     @Bindable var game: Game
+    @State var showEditGameSheet: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -32,9 +33,19 @@ struct GameView: View {
                     Button("New Period", systemImage: "plus", action: {addPeriod()})
                     
                 }
+                .toolbar{
+                    Button("Edit", systemImage: "pencil", action: {
+                        print(game.homeClub.name)
+                        showEditGameSheet = true
+                    })
+                    
+                }
                 .navigationTitle("Game")
                 .navigationBarTitleDisplayMode(.inline)
             }
+            .sheet(isPresented: $showEditGameSheet, content: {
+                NewGameSheet(game: game)
+            })
         }
     }
         
@@ -103,6 +114,6 @@ struct GameView: View {
         }
     }
     
-    #Preview {
-        GameView(game: Game(homeTeam: Team(name: "Vaksala"), awayTeam: Team(name: "Sundsvall"), periods: [Period( number: 1, homeTeamShots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0 )]))
-    }
+//    #Preview {
+//        GameView(game: Game(homeTeam: Team(name: "Vaksala"), awayTeam: Team(name: "Sundsvall"), periods: [Period( number: 1, homeTeamShots: 0, homeTeamGoals: 0, awayTeamShots: 0, awayTeamGoals: 0 )]))
+//    }
