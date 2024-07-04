@@ -10,14 +10,16 @@ import SwiftData
 
 
 @Model
-class Team{
+class Team {
+    let id: UUID = UUID()
     let name: String
-    var logoData: Data?
+//    var logoData: Data?
     init(name: String) {
         self.name = name
     }
-    init(name: String, logoData: Data?){
-        self.name = name
-        self.logoData = logoData
-    }
+//    init(name: String, logoData: Data?){
+//        self.name = name
+//        self.logoData = logoData
+//    }
+
 }
