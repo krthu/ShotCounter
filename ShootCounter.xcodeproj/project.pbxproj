@@ -47,7 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6D86DF292BD1171A00E6311C /* ShootCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShootCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D86DF292BD1171A00E6311C /* ShotTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShotTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D86DF2C2BD1171A00E6311C /* ShootCounterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootCounterApp.swift; sourceTree = "<group>"; };
 		6D86DF2E2BD1171A00E6311C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6D86DF302BD1171B00E6311C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		6D86DF2A2BD1171A00E6311C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6D86DF292BD1171A00E6311C /* ShootCounter.app */,
+				6D86DF292BD1171A00E6311C /* ShotTracker.app */,
 				6D86DF392BD1171B00E6311C /* ShootCounterTests.xctest */,
 				6D86DF432BD1171B00E6311C /* ShootCounterUITests.xctest */,
 			);
@@ -223,7 +223,7 @@
 			);
 			name = ShootCounter;
 			productName = ShootCounter;
-			productReference = 6D86DF292BD1171A00E6311C /* ShootCounter.app */;
+			productReference = 6D86DF292BD1171A00E6311C /* ShotTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6D86DF382BD1171B00E6311C /* ShootCounterTests */ = {
@@ -528,7 +528,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.thun.kristian.ShootCounter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ShotTracker;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -557,7 +557,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.thun.kristian.ShootCounter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ShotTracker;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
