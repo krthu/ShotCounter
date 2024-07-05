@@ -16,19 +16,28 @@ struct ClubView: View {
         VStack{
             ClubLogoImageView(imageData: club.logoData, maxHeight: 100)
                 .padding()
-            List{
-                Section("Teams"){
-                    ForEach(club.teams){ team in
-                        Text(team.name)
+            
+            if club.teams.isEmpty{
+                Spacer()
+                Text("No Teams created!")
+                Spacer()
+            } else {
+                
+                List{
+                    Section("Teams"){
+                        ForEach(club.teams){ team in
+                            Text(team.name)
+                        }
+                        .onDelete(perform: { indexSet in
+                            deleteTeam(indexSet)
+                        })
                     }
-                    .onDelete(perform: { indexSet in
-                        deleteTeam(indexSet)
-                    })
                 }
             }
             Button("Add Team"){
-               showAddTeamSheet = true
+                showAddTeamSheet = true
             }
+            
         }
         .navigationTitle(club.name)
         .sheet(isPresented: $showAddTeamSheet, content:{

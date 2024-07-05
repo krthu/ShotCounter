@@ -19,10 +19,14 @@ struct GamesListView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                if clubs.count == 0 {
+                if clubs.isEmpty {
                     Text("Please add a club first!")
-                } else {
-       
+                } else if games.isEmpty {
+                    Text("No games found")
+                }
+                
+                else {
+                    
                     List{
                         ForEach(groupedGames, id: \.key){ date, games in
                             Section(date){
@@ -37,8 +41,6 @@ struct GamesListView: View {
                                 })
                                 
                             }
-                            
-                            
                         }
                     }
                     .listRowSpacing(5)
@@ -48,7 +50,7 @@ struct GamesListView: View {
                 if clubs.count != 0 {
                     Button("New Game", systemImage: "plus", action: {showNewGameSheet = true})
                 }
-
+                
             }
             .navigationTitle("Games")
         }
@@ -80,11 +82,11 @@ struct GameRow: View{
     
     var body: some View{
         VStack{
-
+            
             HStack{
                 TeamInfo(team: game.homeTeam, club: game.homeClub)
                     .frame(width: 100)
-
+                
                 VStack{
                     Text(game.date.formatted(date: .omitted, time: .shortened))
                         .font(.caption)
@@ -133,9 +135,9 @@ struct NewGameSheet: View {
     @Environment(\.dismiss) var dismiss
     
     init(game: Game? = nil ){
- 
+        
         self.editGame = game
-
+        
     }
     
     
@@ -169,14 +171,14 @@ struct NewGameSheet: View {
                     modelContext.insert(game)
                 }
                 dismiss()
-                    
+                
                 
             }
         }
         .onAppear{
-
+            
             if let game = editGame{
-
+                
                 homeClubIndex = clubs.firstIndex(of: game.homeClub) ?? 0
                 homeTeamIndex = clubs[homeClubIndex].teams.firstIndex(of: game.homeTeam) ?? 0
                 
@@ -184,14 +186,14 @@ struct NewGameSheet: View {
                 awayTeamIndex = clubs[awayClubIndex].teams.firstIndex(of: game.awayTeam) ?? 0
                 
                 selectedDate = game.date
-            
+                
             }
         }
         .onChange(of: homeClubIndex){
             homeTeamIndex = 0
         }
         .onChange(of: awayClubIndex){
-            awayClubIndex = 0
+            awayTeamIndex = 0
         }
         
     }
@@ -213,7 +215,7 @@ struct TeamPickerSection: View {
                     }
                 }
             }
-            TeamPickerView(teamIndex: $teamIndex, teams: clubs[clubIndex].teams)            
+            TeamPickerView(teamIndex: $teamIndex, teams: clubs[clubIndex].teams)
         }
     }
 }
@@ -227,10 +229,15 @@ struct TeamPickerView: View {
     
     
     var body: some View {
-        Picker("Home Team", selection: $teamIndex){
-            ForEach(0..<teams.count, id:\.self){ index in
-                let team = teams[index]
-                Text(team.name)
+        if teams.isEmpty{
+            Text("No teams found!")
+                .foregroundColor(.red)
+        } else {
+            Picker("Home Team", selection: $teamIndex){
+                ForEach(0..<teams.count, id:\.self){ index in
+                    let team = teams[index]
+                    Text(team.name)
+                }
             }
         }
     }
